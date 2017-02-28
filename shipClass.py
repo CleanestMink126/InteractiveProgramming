@@ -31,5 +31,21 @@ class Ship:
         for item in self.cargo:
             print(item)
 
+    def get_angle_from_vert(self):
+        x = self.direct[0]
+        y = self.direct[1]
+        if x >= 0 and y >= 0:
+            angle = math.asin(x)
+        elif x >= 0 and y < 0:
+            angle = math.pi/2 + math.asin(abs(y))
+        elif x < 0 and y <= 0:
+            angle = math.pi + math.asin(abs(x))
+        else:
+            angle = 3*math.pi/2 + math.asin(y)
+        return rad2deg(angle)
+
 def deg2rad(angle):
     return angle*math.pi/180
+
+def rad2deg(angle):
+    return angle*180/math.pi
