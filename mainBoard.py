@@ -51,9 +51,9 @@ class BoardInit:
             mainShip.pos[0] += mainShip.speed[0]
             mainShip.pos[1] += mainShip.speed[1]
             if shiprect.left < 0 or shiprect.right > width:
-                mainShip.speed[0] = -mainShip.speed[0]
+                mainShip.speed[0] = 0
             if shiprect.top < 0 or shiprect.bottom > height:
-                mainShip.speed[1] = -mainShip.speed[1]
+                mainShip.speed[1] = 0
             screen.fill(black)
             screen.blit(ship, shiprect)
             pygame.display.flip()
