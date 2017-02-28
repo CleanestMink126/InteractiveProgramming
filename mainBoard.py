@@ -20,7 +20,7 @@ class BoardInit:
         screen = pygame.display.set_mode(size)
         # ball = pygame.draw.circle(screen, (255, 0, 0), (10, 10), 10, 0)
         mainShip = shipClass.Ship()
-        mainShip.speed = [8,5]
+        mainShip.speed = [0,0]
         shipImage = pygame.image.load(os.path.join('rocket.png'))
         shipImage = pygame.transform.scale(shipImage, (50, 50))
         shipImage = pygame.transform.rotate(shipImage, -45)
@@ -33,13 +33,16 @@ class BoardInit:
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     return
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                    
+                    mainShip.speed[0] += mainShip.direct[0]
+                    mainShip.speed[1] += mainShip.direct[1]
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
-                    ship = rot_center(shipImage, 45)
+                    mainShip.rotatecw(angle = 5.0)
+                    ship = rot_center(shipImage, mainShip.get_angle_from_vert())
                     shiprect = ship.get_rect()
                     shiprect = shiprect.move(mainShip.pos[0], mainShip.pos[1])
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
-                    ship = rot_center(shipImage, -45)
+                    mainShip.rotatecw(angle = -5.0)
+                    ship = rot_center(shipImage, mainShip.get_angle_from_vert())
                     shiprect = ship.get_rect()
                     shiprect = shiprect.move(mainShip.pos[0], mainShip.pos[1])
             shiprect = shiprect.move(mainShip.speed[0], mainShip.speed[1])
