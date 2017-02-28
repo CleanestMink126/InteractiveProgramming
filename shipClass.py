@@ -32,8 +32,9 @@ class Ship:
             print(item)
 
     def get_angle_from_vert(self):
-        x = self.direct[0]
-        y = self.direct[1]
+        norm = math.sqrt(self.direct[0]**2 + self.direct[1]**2)
+        x = self.direct[0]/norm
+        y = self.direct[1]/norm
         if x >= 0 and y > 0:
             angle = math.asin(x)
         elif x > 0 and y <= 0:
