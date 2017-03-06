@@ -123,6 +123,12 @@ class BoardInit:
         self.holerect = self.holeImage.get_rect()
         self.holerect = self.holerect.move(int(self.center[0]), int(self.center[1]))
 
+    def shipCollide(self):
+        if(self.shiprects[0].collidelist(self.shiprects[1:len(self.shiprects)]) != -1):
+            del self.ships[0]
+            del self.shiprects[0]
+            del self.shipImages[0]
+
     def __init__(self):
         pygame.init()
         self.size = self.width, self.height = 1800, 1000
@@ -168,11 +174,12 @@ class BoardInit:
                 self.moveShip(i)
                 self.gravity(i)
                 self.screen.blit(self.shipImages[i], self.shiprects[i])
-                #self.checkHole(i)
+                self.checkHole(i)
                 i += 1
 
             # pygame.draw.circle(self.screen, (255, 0, 0), (int(self.width/2), int(self.height/2)), 10, 0)
             self.rotHole()
+            self.shipCollide()
             self.screen.blit(self.holeImage, self.holerect)
             pygame.display.flip()
             pygame.time.wait(33)
