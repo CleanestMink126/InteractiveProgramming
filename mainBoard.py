@@ -68,7 +68,7 @@ class BoardInit:
     def detTime(self, shipNum):
         distance = self.distanceCent(shipNum)
         # print(distance)
-        return distance / (distance + 500)
+        return distance / (distance + 750)
 
     def checkBounds(self, shipNum):
         if(shipNum > 0):
@@ -81,6 +81,7 @@ class BoardInit:
             self.ships[shipNum].speed[1] = 5
         if self.shiprects[shipNum].bottom > self.height:
             self.ships[shipNum].speed[1] = -5
+
     def checkHole(self, shipNum):
         if (abs(self.ships[shipNum].pos[1] - self.center[1]) < 50 or abs(self.ships[shipNum].pos[1] - self.center[1]) < 50) and (abs(self.ships[shipNum].pos[0] - self.center[0]) < 50 or
                                                                                                                                 abs(self.ships[shipNum].pos[0] - self.center[0]) < 50):
@@ -102,6 +103,26 @@ class BoardInit:
         newrect = self.ship.get_rect()
         self.shiprects.append(newrect.move(self.ships[len(self.ships)-1].pos))
 
+    def makeImages(self):
+        self.shipImage = pygame.image.load(os.path.join('rocket.png'))
+        self.shipImage = pygame.transform.scale(self.shipImage, (50, 50))
+        self.shipImage = pygame.transform.rotate(self.shipImage, -45)
+        self.rockImage = pygame.image.load(os.path.join('rock.png'))
+        self.rockImage = pygame.transform.scale(self.rockImage, (50, 50))
+        self.holeImageOG = pygame.image.load(os.path.join('BlackHole.png'))
+        self.holeImageOG = pygame.transform.scale(self.holeImageOG, (100, 100))
+        self.holerect = self.holeImageOG.get_rect()
+        self.holerect = self.holerect.move(int(self.center[0]), int(self.center[1]))
+        self.holeangle = 0
+
+    def rotHole(self):
+        self.holeangle += 5
+        if self.holeangle > 360:
+            self.holeangle -= 360
+        self.holeImage = rot_center(self.holeImageOG, self.holeangle)
+        self.holerect = self.holeImage.get_rect()
+        self.holerect = self.holerect.move(int(self.center[0]), int(self.center[1]))
+
     def __init__(self):
         pygame.init()
         self.size = self.width, self.height = 1800, 1000
@@ -109,11 +130,7 @@ class BoardInit:
         self.screen = pygame.display.set_mode(self.size)
         # ball = pygame.draw.circle(self.screen, (255, 0, 0), (10, 10), 10, 0)
         self.center = [self.width/2, self.height/2]
-        self.shipImage = pygame.image.load(os.path.join('rocket.png'))
-        self.shipImage = pygame.transform.scale(self.shipImage, (50, 50))
-        self.shipImage = pygame.transform.rotate(self.shipImage, -45)
-        self.rockImage = pygame.image.load(os.path.join('rock.png'))
-        self.rockImage = pygame.transform.scale(self.rockImage, (50, 50))
+        self.makeImages()
         self.ship = self.shipImage.copy()
         self.shiprect = self.ship.get_rect()
         self.ships = []
@@ -154,7 +171,9 @@ class BoardInit:
                 #self.checkHole(i)
                 i += 1
 
-            pygame.draw.circle(self.screen, (255, 0, 0), (int(self.width/2), int(self.height/2)), 10, 0)
+            # pygame.draw.circle(self.screen, (255, 0, 0), (int(self.width/2), int(self.height/2)), 10, 0)
+            self.rotHole()
+            self.screen.blit(self.holeImage, self.holerect)
             pygame.display.flip()
             pygame.time.wait(33)
         pygame.display.quit()
