@@ -2,7 +2,18 @@ import math
 
 class Ship:
 
-    def __init__(self, pos = [0, 0], direct = [1, 0], thrust = 0, speed = [0,0]):
+    def __init__(self, pos = None, direct = None, thrust = None, speed = None):
+
+        if(pos is None):
+            pos = [0,0]
+        if(direct is None):
+            direct = [1,0]
+        if(thrust is None):
+            thrust = 0
+        if(speed is None):
+            speed = [0,0]
+
+
         self.pos = pos
         self.direct = direct
         self.thrust = thrust

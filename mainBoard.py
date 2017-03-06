@@ -40,7 +40,6 @@ class BoardInit:
         if shipNum == 0:
             myTime = 1
             mainTime = 1
-        self.shiprects[shipNum] = self.shiprects[shipNum].move((int(xc * myTime)/mainTime), int((yc * myTime)/mainTime))
         self.ships[shipNum].pos[0] += ((xc * myTime)/mainTime)
         self.ships[shipNum].pos[1] += ((yc * myTime)/mainTime)
 
@@ -72,6 +71,8 @@ class BoardInit:
         return distance / (distance + 500)
 
     def checkBounds(self, shipNum):
+        if(shipNum > 0):
+            print("NO THIS DOES NOT HAPPEN")
         if self.shiprects[shipNum].left < 0:
             self.ships[shipNum].speed[0] = 5
         if self.shiprects[shipNum].right > self.width:
@@ -87,7 +88,15 @@ class BoardInit:
             del self.shiprects[shipNum]
             del self.shipImages[shipNum]
 
-    def makeShip(self, tdirect = [0,1], tspeed = [0,0], tpos = [600,600]):
+    def makeShip(self, tdirect = None, tspeed = None, tpos = None):
+
+        if(tpos is None):
+            tpos = [600,600]
+        if(tdirect is None):
+            direct = [0,1]
+        if(tspeed is None):
+            tspeed = [0,0]
+
         self.ships.append(shipClass.Ship(direct=tdirect, speed =tspeed, pos = tpos))
         self.shipImages.append(self.rockImage.copy())
         newrect = self.ship.get_rect()
@@ -116,8 +125,8 @@ class BoardInit:
         self.shiprects.append(self.shiprect)
         self.makeShip(tpos=[1000, 1000],tspeed=[10, 0])
         self.makeShip(tpos=[500, 500],tspeed=[0, 10])
-        self.makeShip(tpos=[100, 100])
-        self.makeShip()
+        self.makeShip(tpos=[100, 100],tspeed=[10, 0])
+        self.makeShip(tspeed=[50, 0])
         while 1:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -142,7 +151,7 @@ class BoardInit:
                 self.moveShip(i)
                 self.gravity(i)
                 self.screen.blit(self.shipImages[i], self.shiprects[i])
-                self.checkHole(i)
+                #self.checkHole(i)
                 i += 1
 
             pygame.draw.circle(self.screen, (255, 0, 0), (int(self.width/2), int(self.height/2)), 10, 0)
