@@ -53,10 +53,11 @@ class BoardInit:
             self.ships[shipNum].speed[0] = 0
         if self.shiprects[shipNum].top < 0 or self.shiprects[shipNum].bottom > self.height:
             self.ships[shipNum].speed[1] = 0
-        if abs(self.shiprects[shipNum].top - self.center[1] < 50) or abs(self.shiprects[shipNum].bottom - self.center[1]) < 50:
-            self.ships.pop(shipNum)
-            self.shiprects.pop(shipNum)
-            self.shipImages.pop(shipNum)
+        if (abs(self.ships[shipNum].pos[1] - self.center[1]) < 50 or abs(self.ships[shipNum].pos[1] - self.center[1]) < 50) and (abs(self.ships[shipNum].pos[0] - self.center[0]) < 50 or
+                                                                                                                                abs(self.ships[shipNum].pos[0] - self.center[0]) < 50):
+            del self.ships[shipNum]
+            del self.shiprects[shipNum]
+            del self.shipImages[shipNum]
 
     def makeShip(self, tdirect = [0,1], tspeed = [0,0], tpos = [600,600]):
         self.ships.append(shipClass.Ship(direct=tdirect, speed =tspeed, pos = tpos))
@@ -100,12 +101,12 @@ class BoardInit:
             if keys[pygame.K_SPACE]:
                 self.accelerate(0)
             self.screen.fill(black)
-            for i in range(len(self.ships)):
+            i = 0
+            while i < len(self.ships):
                 self.moveShip(i)
                 self.gravity(i)
                 self.rotShip(0, i)
                 self.screen.blit(self.shipImages[i], self.shiprects[i])
-            while i < len(self.ships):
                 self.checkBounds(i)
                 i += 1
 
