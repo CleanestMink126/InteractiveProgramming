@@ -139,7 +139,9 @@ class BoardInit:
     def check_dot(self):
         if(self.dotrect.colliderect(self.shiprects[0]) or self.dotrect.colliderect(self.holerect)):
             self.make_dot()
-            self.makeShip(tpos=[1000, 1000],tspeed=[10, 0])
+            pos = [random.randint(100, 1700), random.randint(100, 900)]
+            speed = [random.randint(-20, 20), random.randint(-20, 20)]
+            self.makeShip(tpos=pos,tspeed=speed)
 
     def rockCollide(self):
         for i in range(1, len(self.shiprects)):
