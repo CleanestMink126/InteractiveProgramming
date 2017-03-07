@@ -119,7 +119,7 @@ class BoardInit:
         self.holeangle = 0
 
     def rotHole(self):
-        self.holeangle += 2 / self.detTime(0)
+        self.holeangle += .1/ self.detTime(0)
         if self.holeangle > 360:
             self.holeangle -= 360
         self.holeImage = rot_center(self.holeImageOG, self.holeangle)
@@ -127,10 +127,24 @@ class BoardInit:
         self.holerect = self.holerect.move(int(self.center[0]), int(self.center[1]))
 
     def shipCollide(self):
-        if(self.shiprects[0].collidelist(self.shiprects[1:len(self.shiprects)]) != -1):
-            del self.ships[0]
-            del self.shiprects[0]
-            del self.shipImages[0]
+        # if(self.shiprects[0].collidelist(self.shiprects[1:len(self.shiprects)]) != -1):
+        #     del self.ships[0]
+        #     del self.shiprects[0]
+        #     del self.shipImages[0]
+
+        collideIndex = self.shiprects[0].collidelist(self.shiprects[1:len(self.shiprects)])
+        if(collideIndex != -1):
+            collideIndex += 1
+            rock1 = self.ships[0]
+            rock2 = self.ships[collideIndex]
+            mag1 = ((rock1.speed[0] ** 2) + (rock1.speed[1] ** 2)) ** .5
+            mag2 = ((rock2.speed[0] ** 2) + (rock2.speed[1] ** 2)) ** .5
+            magAvg = (mag1 + mag2)/2
+            rock1.speed[0], rock1.speed[1], rock2.speed[0], rock2.speed[1] = magAvg * rock2.speed[0]/mag2, magAvg * rock2.speed[1]/mag2, magAvg * rock1.speed[0]/mag1, magAvg * rock1.speed[1]/mag1
+            self.moveShip(0)
+            self.moveShip(collideIndex)
+            self.moveShip(0)
+            self.moveShip(collideIndex)
 
     def make_dot(self):
         self.dotrect = self.glowyImage.get_rect()
@@ -140,7 +154,7 @@ class BoardInit:
         if(self.dotrect.colliderect(self.shiprects[0]) or self.dotrect.colliderect(self.holerect)):
             self.make_dot()
             pos = [random.randint(100, 1700), random.randint(100, 900)]
-            speed = [random.randint(-20, 20), random.randint(-20, 20)]
+            speed = [random.randint(-50, 50), random.randint(-50, 50)]
             self.makeShip(tpos=pos,tspeed=speed)
 
     def rockCollide(self):
