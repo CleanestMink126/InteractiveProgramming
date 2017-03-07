@@ -22,6 +22,7 @@ class BoardInit:
         self.shiprects[shipNum] = self.shiprects[shipNum].move(self.ships[shipNum].pos[0], self.ships[shipNum].pos[1])
 
     def rotRock(self, myangle, shipNum):
+        myangle /= self.detTime(0)
         self.ships[shipNum].rotatecw(angle=myangle)
         self.shipImages[shipNum] = rot_center(self.rockImage, self.ships[shipNum].get_angle_from_vert())
         self.shiprects[shipNum] = self.shipImages[shipNum].get_rect()
@@ -111,12 +112,14 @@ class BoardInit:
         self.rockImage = pygame.transform.scale(self.rockImage, (50, 50))
         self.holeImageOG = pygame.image.load(os.path.join('BlackHole.png'))
         self.holeImageOG = pygame.transform.scale(self.holeImageOG, (100, 100))
+        self.glowyImage = pygame.image.load(os.path.join('glowy.png'))
+        self.glowyImage = pygame.transform.scale(self.glowyImage, (50, 50))
         self.holerect = self.holeImageOG.get_rect()
         self.holerect = self.holerect.move(int(self.center[0]), int(self.center[1]))
         self.holeangle = 0
 
     def rotHole(self):
-        self.holeangle += 5
+        self.holeangle += 2 / self.detTime(0)
         if self.holeangle > 360:
             self.holeangle -= 360
         self.holeImage = rot_center(self.holeImageOG, self.holeangle)
@@ -128,6 +131,36 @@ class BoardInit:
             del self.ships[0]
             del self.shiprects[0]
             del self.shipImages[0]
+
+    def make_dot(self):
+        self.dotrect = self.glowyImage.get_rect()
+        self.dotrect = self.dotrect.move(random.randint(100, 1700), random.randint(100, 900))
+
+    def check_dot(self):
+        if(self.dotrect.colliderect(self.shiprects[0]) or self.dotrect.colliderect(self.holerect)):
+            self.make_dot()
+            self.makeShip(tpos=[1000, 1000],tspeed=[10, 0])
+
+    def rockCollide(self):
+        for i in range(1, len(self.shiprects)):
+            collideIndex = self.shiprects[i].collidelist(self.shiprects[i+1:len(self.shiprects)])
+            if(collideIndex != -1):
+                collideIndex += 1 + i
+                rock1 = self.ships[i]
+                rock2 = self.ships[collideIndex]
+                mag1 = ((rock1.speed[0] ** 2) + (rock1.speed[1] ** 2)) ** .5
+                mag2 = ((rock2.speed[0] ** 2) + (rock2.speed[1] ** 2)) ** .5
+                magAvg = (mag1 + mag2)/2
+                rock1.speed[0], rock1.speed[1], rock2.speed[0], rock2.speed[1] = magAvg * rock2.speed[0]/mag2, magAvg * rock2.speed[1]/mag2, magAvg * rock1.speed[0]/mag1, magAvg * rock1.speed[1]/mag1
+
+                self.moveShip(i)
+                self.moveShip(collideIndex)
+                self.moveShip(i)
+                self.moveShip(collideIndex)
+                # rock1.speed[0] = magAvg * rock2.speed[0]/mag2
+                #rock1.speed[1] = magAvg * rock2.speed[1]/mag2
+                #rock2.speed[0] = magAvg * rock1.speed[0]/mag1
+                #rock2.speed[1] = magAvg * rock1.speed[1]/mag1
 
     def __init__(self):
         pygame.init()
@@ -146,10 +179,11 @@ class BoardInit:
         self.shiprect = self.shiprect.move(self.ships[0].pos)
         self.shipImages.append(self.shipImage.copy())
         self.shiprects.append(self.shiprect)
-        self.makeShip(tpos=[1000, 1000],tspeed=[10, 0])
-        self.makeShip(tpos=[500, 500],tspeed=[0, 10])
-        self.makeShip(tpos=[100, 100],tspeed=[10, 0])
-        self.makeShip(tspeed=[50, 0])
+        # self.makeShip(tpos=[1000, 1000],tspeed=[10, 0])
+        # self.makeShip(tpos=[500, 500],tspeed=[0, 10])
+        # self.makeShip(tpos=[300, 100],tspeed=[10, 0])
+        # self.makeShip(tspeed=[50, 0])
+        self.make_dot()
         while 1:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -168,19 +202,22 @@ class BoardInit:
             self.rotShip(0, i)
             while i < len(self.ships):
                 if i > 0:
-                    self.rotRock(10, i)
+                    self.rotRock(2, i)
                 else:
                     self.checkBounds(i)
                 self.moveShip(i)
                 self.gravity(i)
                 self.screen.blit(self.shipImages[i], self.shiprects[i])
+                self.check_dot()
                 self.checkHole(i)
                 i += 1
 
             # pygame.draw.circle(self.screen, (255, 0, 0), (int(self.width/2), int(self.height/2)), 10, 0)
             self.rotHole()
             self.shipCollide()
+            self.rockCollide()
             self.screen.blit(self.holeImage, self.holerect)
+            self.screen.blit(self.glowyImage, self.dotrect)
             pygame.display.flip()
             pygame.time.wait(33)
         pygame.display.quit()
