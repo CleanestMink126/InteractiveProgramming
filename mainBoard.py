@@ -52,8 +52,8 @@ class BoardInit:
         if shipNum == 0:
             myTime = 1
             mainTime = 1
-        self.ships[shipNum].speed[0] -= myTime * ((self.ships[shipNum].pos[0]-self.center[0])/distance * .6)/mainTime
-        self.ships[shipNum].speed[1] -= myTime * ((self.ships[shipNum].pos[1]-self.center[1])/distance * .6)/mainTime
+        self.ships[shipNum].speed[0] -= myTime * ((self.ships[shipNum].pos[0]-self.center[0])/(distance ** 2) * 200)/mainTime
+        self.ships[shipNum].speed[1] -= myTime * ((self.ships[shipNum].pos[1]-self.center[1])/(distance ** 2) * 200)/mainTime
         if mainTime < 0:
             print("fuckin weird shit")
         if myTime < 0:
@@ -154,7 +154,15 @@ class BoardInit:
         if(self.dotrect.colliderect(self.shiprects[0]) or self.dotrect.colliderect(self.holerect)):
             self.make_dot()
             pos = [random.randint(100, 1700), random.randint(100, 900)]
-            speed = [random.randint(-50, 50), random.randint(-50, 50)]
+            speed = [random.randint(-5, 5), random.randint(-5, 5)]
+            self.makeShip(tpos=pos,tspeed=speed)
+            self.make_dot()
+            pos = [random.randint(100, 1700), random.randint(100, 900)]
+            speed = [random.randint(-5, 5), random.randint(-5, 5)]
+            self.makeShip(tpos=pos,tspeed=speed)
+            self.make_dot()
+            pos = [random.randint(100, 1700), random.randint(100, 900)]
+            speed = [random.randint(-5, 5), random.randint(-5, 5)]
             self.makeShip(tpos=pos,tspeed=speed)
 
     def rockCollide(self):
