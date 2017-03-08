@@ -7,10 +7,14 @@ class Score:
         self.pos = pos
         self.value = starting_value
         self.font = pygame.font.SysFont("monospace", size)
+        self.dead = False
 
     def score(self, amount = 1):
         self.value += amount
 
     def render(self):
         label = self.font.render(str(self.value), 1, (255, 255, 255))
+        lose = self.font.render('YOU LOSE', 1, (255, 0, 0))
         self.screen.blit(label, (self.pos[0], self.pos[1]))
+        if(self.dead):
+            self.screen.blit(lose, (500, 500))

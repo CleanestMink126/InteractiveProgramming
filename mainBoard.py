@@ -90,7 +90,8 @@ class BoardInit:
             del self.ships[shipNum]
             del self.shiprects[shipNum]
             del self.shipImages[shipNum]
-
+            if(shipNum == 0):
+                self.score_obj.dead = True
     def makeShip(self, tdirect = None, tspeed = None, tpos = None):
 
         if(tpos is None):
@@ -132,7 +133,7 @@ class BoardInit:
             del self.ships[0]
             del self.shiprects[0]
             del self.shipImages[0]
-
+            self.score_obj.dead = True
         # collideIndex = self.shiprects[0].collidelist(self.shiprects[1:len(self.shiprects)])
         # if(collideIndex != -1):
         #     collideIndex += 1
@@ -157,7 +158,8 @@ class BoardInit:
             pos = [random.randint(100, 1700), random.randint(100, 900)]
             speed = [random.randint(-15, 15), random.randint(-15, 15)]
             self.makeShip(tpos=pos,tspeed=speed)
-            self.score_obj.score(1)
+            if(not self.score_obj.dead):
+                self.score_obj.score(1)
 
 
     def rockCollide(self):
