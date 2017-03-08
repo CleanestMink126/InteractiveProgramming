@@ -1,6 +1,7 @@
 class Bullet:
 
     def __init__(self, pos = [100, 100], dir = [1,0], speed = 10, bounceable = True):
+        """not used"""
         self.pos = pos
         self.dir = dir
         self.speed = speed

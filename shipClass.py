@@ -3,7 +3,7 @@ import math
 class Ship:
 
     def __init__(self, pos = None, direct = None, thrust = None, speed = None):
-
+        """init for ships and other objects aswell"""
         if(pos is None):
             pos = [0,0]
         if(direct is None):
@@ -24,6 +24,8 @@ class Ship:
         return "Hello. I am a spaceship."   #   Because I can that's why
 
     def rotatecw(self, angle = 90):
+        """rotates the direction o the ship by the given degrees
+        note direction is in xy"""
         angle = deg2rad(angle)
         x = self.direct[0]
         y = self.direct[1]
@@ -32,6 +34,7 @@ class Ship:
         self.direct = [newx, newy]
 
     def add_cargo(self, item):              #   This is necessary
+        """idk why theres cargo"""
         self.cargo.append(item)
 
     def jettison(self, item):
@@ -43,6 +46,7 @@ class Ship:
             print(item)
 
     def get_angle_from_vert(self):
+        """returns the angle the ship is from verticle in order for the main class to get the correct angle image"""
         norm = math.sqrt(self.direct[0]**2 + self.direct[1]**2)
         x = self.direct[0]/norm
         y = self.direct[1]/norm
