@@ -154,7 +154,7 @@ class BoardInit:
         if(self.dotrect.colliderect(self.shiprects[0]) or self.dotrect.colliderect(self.holerect)):
             self.make_dot()
             pos = [random.randint(100, 1700), random.randint(100, 900)]
-            speed = [random.randint(-10, 10), random.randint(-10, 10)]
+            speed = [random.randint(-15, 15), random.randint(-15, 15)]
             self.makeShip(tpos=pos,tspeed=speed)
 
 
