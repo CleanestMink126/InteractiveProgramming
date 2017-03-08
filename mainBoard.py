@@ -1,5 +1,6 @@
 """ Experiment with face detection and image filtering using OpenCV """
 import shipClass
+import score_class
 
 import os
 import sys
@@ -156,6 +157,7 @@ class BoardInit:
             pos = [random.randint(100, 1700), random.randint(100, 900)]
             speed = [random.randint(-15, 15), random.randint(-15, 15)]
             self.makeShip(tpos=pos,tspeed=speed)
+            self.score_obj.score(1)
 
 
     def rockCollide(self):
@@ -186,6 +188,7 @@ class BoardInit:
         self.screen = pygame.display.set_mode(self.size)
         # ball = pygame.draw.circle(self.screen, (255, 0, 0), (10, 10), 10, 0)
         self.center = [self.width/2, self.height/2]
+        self.score_obj = score_class.Score(self.screen, 50)
         self.makeImages()
         self.ship = self.shipImage.copy()
         self.shiprect = self.ship.get_rect()
@@ -201,6 +204,7 @@ class BoardInit:
         # self.makeShip(tpos=[300, 100],tspeed=[10, 0])
         # self.makeShip(tspeed=[50, 0])
         self.make_dot()
+
         while 1:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -233,6 +237,7 @@ class BoardInit:
             self.rotHole()
             self.shipCollide()
             self.rockCollide()
+            self.score_obj.render()
             self.screen.blit(self.holeImage, self.holerect)
             self.screen.blit(self.glowyImage, self.dotrect)
             pygame.display.flip()
