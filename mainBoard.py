@@ -154,15 +154,13 @@ class BoardInit:
         if(self.dotrect.colliderect(self.shiprects[0]) or self.dotrect.colliderect(self.holerect)):
             self.make_dot()
             pos = [random.randint(100, 1700), random.randint(100, 900)]
-            speed = [random.randint(-5, 5), random.randint(-5, 5)]
+            speed = [random.randint(-50, 50), random.randint(-50, 50)]
             self.makeShip(tpos=pos,tspeed=speed)
-            self.make_dot()
             pos = [random.randint(100, 1700), random.randint(100, 900)]
-            speed = [random.randint(-5, 5), random.randint(-5, 5)]
+            speed = [random.randint(-50, 50), random.randint(-50, 50)]
             self.makeShip(tpos=pos,tspeed=speed)
-            self.make_dot()
             pos = [random.randint(100, 1700), random.randint(100, 900)]
-            speed = [random.randint(-5, 5), random.randint(-5, 5)]
+            speed = [random.randint(-50, 50), random.randint(-50, 50)]
             self.makeShip(tpos=pos,tspeed=speed)
 
     def rockCollide(self):
