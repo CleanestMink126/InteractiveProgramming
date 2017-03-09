@@ -16,13 +16,18 @@ if not pygame.mixer:
 class BoardInit:
     def rotShip(self, myangle, shipNum):
         """rotate the main ship"""
-        self.ships[shipNum].rotatecw(angle=myangle)"""changes the ship object in the list of ships"""
-        self.shipImages[shipNum] = rot_center(self.shipImage, self.ships[shipNum].get_angle_from_vert()) """this will call the function to rotate the ship image about its center"""
-        self.shiprects[shipNum] = self.shipImages[shipNum].get_rect()"""this will grab the bounding box of the new ship"""
-        self.shiprects[shipNum] = self.shiprects[shipNum].move(self.ships[shipNum].pos[0], self.ships[shipNum].pos[1])"""this will move the box to the position of the ship"""
+        self.ships[shipNum].rotatecw(angle=myangle)
+        """changes the ship object in the list of ships"""
+        self.shipImages[shipNum] = rot_center(self.shipImage, self.ships[shipNum].get_angle_from_vert())
+        """this will call the function to rotate the ship image about its center"""
+        self.shiprects[shipNum] = self.shipImages[shipNum].get_rect()
+        """this will grab the bounding box of the new ship"""
+        self.shiprects[shipNum] = self.shiprects[shipNum].move(self.ships[shipNum].pos[0], self.ships[shipNum].pos[1])
+        """this will move the box to the position of the ship"""
 
     def rotRock(self, myangle, shipNum):
-        myangle /= self.detTime(0) """this will change the angle of rotation based on the distance of the player ship from the blackhole"""
+        myangle /= self.detTime(0)
+        """this will change the angle of rotation based on the distance of the player ship from the blackhole"""
         """the rest is the same as rot ship"""
         self.ships[shipNum].rotatecw(angle=myangle)
         self.shipImages[shipNum] = rot_center(self.rockImage, self.ships[shipNum].get_angle_from_vert())
@@ -239,9 +244,12 @@ class BoardInit:
                 self.rotShip(-10, 0)
             if keys[pygame.K_SPACE]:
                 self.accelerate(0)
+            if keys[pygame.K_r]:
+                board = BoardInit()
 
             self.screen.fill(black)
-            i = 0"""below rotates ship to uppdate position"""
+            i = 0
+            """below rotates ship to uppdate position"""
             self.rotShip(0, i)
             """this loops over each ship and does the necessry operations on each"""
             while i < len(self.ships):
