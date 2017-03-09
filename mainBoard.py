@@ -235,7 +235,9 @@ class BoardInit:
                 if event.type == pygame.QUIT:
                     return
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                    return
+                    pygame.display.quit()
+                    pygame.quit()
+                    sys.exit()
             """this detects the arrow keys for turning and space for accelerations"""
             keys = pygame.key.get_pressed()  #checking pressed keys
             if keys[pygame.K_LEFT]:
